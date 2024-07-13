@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    expose:
+      - 5173
+    depends_on:
+      pocketbase:
+        condition: service_started
+    environment:
+      - NODE_ENV=development
+      - APP_DIR=/home/ivsheva/Documents/Projects/nike-shop
+    volumes:
+      - ${APP_DIR}:/app
+      - /app/node_modules
+
+  pocketbase:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8090:8090"
+    expose:
+      - 8090
